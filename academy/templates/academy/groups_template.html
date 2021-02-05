@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GROUPS</title>
+</head>
+<body>
+    {% for group in groups %}
+        <div>
+            <h3>   {{ group.course|linebreaksbr }}</h3>
+            <p><u>Teacher on course</u> - <b>{{ group.teacher.first_name }} {{ group.teacher.last_name }}</b></p>
+            <u>Students on course:</u>
+                <ul>
+                    {% for student in group.students.all %}
+                        <li>{{ student.first_name }} {{ student.last_name }}</li>
+                    {% endfor %}
+                </ul>
+        </div>
+    {% endfor %}
+</body>
+</html>
