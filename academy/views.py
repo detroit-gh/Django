@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Student, Lecturer, Group
 
+from .models import Group, Lecturer, Student
 
 
 def get_home(request):
