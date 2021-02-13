@@ -1,13 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>GROUPS</title>
-</head>
-<body>
+{% extends 'academy/base.html' %}
+
+{% block title %}
+    GROUPS
+{% endblock %}
+
+{% block content %}
     {% for group in groups %}
         <div>
-            <h3>   {{ group.course|linebreaksbr }}</h3>
+            <h3>   {{ group.course|linebreaksbr }}
+            {% if user.is_authenticated %}
+                <a href="{% url 'edit_groups' group_id=group.id %}">
+                    <button>EDIT</button>
+                </a>
+                <a href="{% url 'delete_groups' group_id=group.id %}">
+                    <button>DELETE</button>
+                </a>
+            {% endif %}
+            </h3>
             <p><u>Teacher on course</u> - <b>{{ group.teacher.first_name }} {{ group.teacher.last_name }}</b></p>
             <u>Students on course:</u>
                 <ul>
@@ -17,5 +26,7 @@
                 </ul>
         </div>
     {% endfor %}
-</body>
-</html>
+    {% if user.is_authenticated %}
+        <a href="{% url 'add_groups' %}"><button>ADD GROUP</button></a>
+    {% endif %}
+{% endblock %}
