@@ -1,0 +1,18 @@
+{% extends 'academy/lecturers_base.html' %}
+
+{% block title %}
+    ADD LECTURER
+{% endblock %}
+
+{% block content %}
+    {% if lecturer %}
+        <br>
+        <b>New lecturer has been added to base!</b>
+    {% else %}
+        <form method="post">
+            {{ lecturer_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Add lecturer"></p>
+        </form>
+    {% endif %}
+{% endblock %}

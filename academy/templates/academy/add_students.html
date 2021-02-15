@@ -1,0 +1,18 @@
+{% extends 'academy/students_base.html' %}
+
+{% block title %}
+    ADD STUDENT
+{% endblock %}
+
+{% block content %}
+    {% if student %}
+        <br>
+        <b>New student has been added to base!</b>
+    {% else %}
+        <form method="post">
+            {{ student_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Add student"></p>
+        </form>
+    {% endif %}
+{% endblock %}

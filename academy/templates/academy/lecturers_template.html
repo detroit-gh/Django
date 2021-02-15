@@ -1,0 +1,26 @@
+{% extends 'academy/base.html' %}
+
+{% block title %}
+    LECTURERS
+{% endblock %}
+
+{% block content %}
+    <br>
+    {% for lecturer in lecturers %}
+        <div>
+            <b>{{ lecturer.first_name }} {{ lecturer.last_name }}</b>, {{ lecturer.email }}
+            {% if user.is_authenticated %}
+                <a href="{% url 'edit_lecturers' lecturer_id=lecturer.id %}">
+                    <button>EDIT</button>
+                </a>
+                <a href="{% url 'delete_lecturers' lecturer_id=lecturer.id %}">
+                    <button>DELETE</button>
+                </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% if user.is_authenticated %}
+        <br>
+        <a href="{% url 'add_lecturers' %}"><button>ADD LECTURER</button></a>
+    {% endif %}
+{% endblock %}
