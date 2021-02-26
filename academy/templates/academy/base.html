@@ -8,6 +8,9 @@
     {% if request.path != '/' %}
         <a href="{% url 'get_home' %}"><button>GO HOME</button></a>
     {% endif %}
+    {% if request.path != '/contactus' %}
+        <a href="{% url 'add_feedback' %}"><button>CONTACT US</button></a>
+    {% endif %}
     <div>
         {% block content %}
             <h1>Hello! This is my new Django project</h1>

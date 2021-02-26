@@ -1,7 +1,8 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
-from .models import Group, Lecturer, Student
+from .models import ContactUs, Group, Lecturer, Student
+from .tasks import send_email
 
 
 @receiver(pre_save, sender=Student)
@@ -17,5 +18,10 @@ def capitalize_lecturer(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=Group)
-def capitalize_person(sender, instance, **kwargs):
+def capitalize_group(sender, instance, **kwargs):
     instance.course = instance.course.capitalize()
+
+
+@receiver(post_save, sender=ContactUs)
+def send_notification(sender, instance, **kwargs):
+    send_email.delay(instance.to_dict())

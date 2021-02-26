@@ -22,6 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '@q=7gaciuh5870bdm3@ne6i=*ybcb@$mv49yu3_qgkkmbpp#t7'
 
+SENDGRID_KEY = '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'
+EMAIL_SENDER = 'detroit9gag@protonmail.com'
+EMAIL_RECIPIENT = 'detroit9gag@gmail.com'
+
+CELERY_BROKER_URL = 'amqp://localhost'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
     'academy.apps.AcademyConfig',
     'logger',
     'silk'
@@ -110,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
