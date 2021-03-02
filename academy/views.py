@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import GroupForm, LecturerForm, StudentForm
+from .forms import ContactUsForm, GroupForm, LecturerForm, StudentForm
 from .models import Group, Lecturer, Student
 
 
@@ -117,3 +117,17 @@ def delete_lecturers(request, lecturer_id):
 def delete_groups(request, group_id):
     Group.objects.filter(id=group_id).delete()
     return redirect('get_groups')
+
+
+def add_feedback(request):
+    feedback = None
+
+    if request.method == 'POST':
+        feedback_form = ContactUsForm(data=request.POST)
+        if feedback_form.is_valid():
+            feedback = feedback_form.save()
+    context = {
+        'feedback': feedback,
+        'feedback_form': ContactUsForm()
+    }
+    return render(request, 'academy/add_feedback.html', context)

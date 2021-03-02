@@ -11,8 +11,8 @@ class LoggerMiddleware:
     def __call__(self, request):
         start = time.time()
         response = self.get_response(request)
-        diff = time.time() - start
         if not request.path.startswith('/admin'):
+            diff = time.time() - start
             log = Log(path=request.path, method=request.method, execution_time_sec=diff)
             log.save()
         return response

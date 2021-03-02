@@ -1,0 +1,17 @@
+{% extends 'academy/base.html' %}
+
+{% block title %}
+    CONTACT US
+{% endblock %}
+
+{% block content %}
+    {% if feedback %}
+        <b>Thanks for your feedback!</b>
+    {% else %}
+        <form method="post">
+            {{ feedback_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Send"></p>
+        </form>
+    {% endif %}
+{% endblock %}
