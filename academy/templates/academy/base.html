@@ -1,23 +1,112 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Fascinate&display=swap" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'academy/styles.css' %}">
     <title>{% block title %}L M S{% endblock %}</title>
 </head>
 <body>
-    {% if request.path != '/' %}
-        <a href="{% url 'get_home' %}"><button>GO HOME</button></a>
-    {% endif %}
-    {% if request.path != '/contactus' %}
-        <a href="{% url 'add_feedback' %}"><button>CONTACT US</button></a>
-    {% endif %}
-    <div>
-        {% block content %}
-            <h1>Hello! This is my new Django project</h1>
-            <p>List of our students <a href="students">here</a></p>
-            <p>List of our teachers <a href="lecturers">here</a></p>
-            <p>Information about groups <a href="groups">here</a></p>
-        {% endblock %}
+    <div class="navbar navbar-light header shadow-sm mb-1">
+        <div class="container">
+            <svg width="150" height="35" fill="none" xmlns="http://www.w3.org/2000/svg" class="header__logo-image" viewBox="0 0 150 35">
+                <text x="0" y="30" style="font-family: 'Fascinate', cursive; font-size: 32px;" fill="#4fec8f">ACADEMY</text>
+            </svg>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-1">
+                <div class="row justify-content-end">
+                    <div class="col-8">
+                        {% if request.path != '/' %}
+                            <div class="card mt-2 pt-1 pb-2 text-center">
+                                <a href="{% url 'get_home' %}">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.9317 1L0.000244141 12.9314H4V22.0743H9V16H15V22.0743H20V12.9314H24L11.9317 1Z" fill="#4542ce"></path>
+                                        <rect opacity="0.5" x="9" y="16" width="6" height="4" fill="#4fec8f"></rect>
+                                    </svg>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if request.path != '/contactus' %}
+                            <div class="card mt-2 pt-1 pb-2 text-center">
+                                <a href="{% url 'add_feedback' %}">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M20.0001 2.64811C20.0001 1.75 19.2501 1 18.5001 1L2.4851 1C1.75011 1 1.00007 1.75 1.00009 2.5L1 19.9654C1 21.7238 2.22241 23 4.04501 23L20 23L20.0001 2.64811ZM10 5H6.00009C5.5476 5 5 5.54751 5 6C5.04661 6.41697 5.58053 7.0026 6.00009 7H10C10.4022 7 11 6.40222 11 6C11.0547 5.56558 10.4321 4.99661 10 5ZM5.9424 19H15.0001C15.4526 19 16 18.4525 16 18C15.9534 17.583 15.4197 16.9974 15.0001 17H6.00009C5.58053 16.9974 5.04661 17.583 5 18C5 18.4503 5.49668 19 5.9424 19ZM5.9424 16H15.0001C15.4197 16.0026 15.9534 15.417 16 15C16 14.5475 15.4526 14 15.0001 14H6.00009C5.54977 14 5 14.5543 5 15C5.04661 15.417 5.52284 16.0026 5.9424 16ZM6.00009 13H15.0001C15.4526 13 16 12.4525 16 12C15.9534 11.583 15.4774 10.9974 15.0578 11H6.00009C5.58053 10.9974 5.04661 11.583 5 12C5 12.4457 5.54977 13 6.00009 13ZM5.9424 10H15.0001C15.4197 10.0026 15.9534 9.41697 16 9C16 8.54751 15.4526 8 15.0001 8H5.9424C5.49207 8 5 8.55429 5 9C5.04661 9.41697 5.52284 10.0026 5.9424 10Z" fill="#4542ce"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-8">
+                {% block content %}
+                    <h1 style="text-align: center">WELCOME TO OUR ACADEMY OF MAGIC</h1>
+                    <img class="main" src="media/123.png">
+                    <div class="card flex-row mt-2 shadow-sm">
+                        <img class="card-img-left flex-auto d-none d-lg-block all" src="media/student.png">
+                        <div class="card-body d-flex flex-column align-items-center">
+                            <h2>
+                                <a class="text-dark" href="students">LIST OF OUR STUDENTS CAN FIND HERE</a>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="card flex-row mt-2 shadow-sm">
+                        <img class="card-img-left flex-auto d-none d-lg-block all" src="media/teacher.png">
+                        <div class="card-body d-flex flex-column align-items-center">
+                            <h2>
+                                <a class="text-dark" href="lecturers">LIST OF OUR TEACHERS CAN FIND HERE</a>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="card flex-row mt-2 shadow-sm">
+                        <img class="card-img-left flex-auto d-none d-lg-block all" src="media/group.png">
+                        <div class="card-body d-flex flex-column align-items-center">
+                            <h2>
+                                <a class="text-dark" href="groups">INFO ABOUT GROUPS CAN FIND HERE</a>
+                            </h2>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+
+            <div class="col-3">
+                <div class="flex-row mt-2 ps-2 pe-2 shadow-sm">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">USD</th>
+                                <th scope="col">EUR</th>
+                                <th scope="col">RUR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">BUY</th>
+                                <td bgcolor={{ USD_buy_change }}>{{ USD_buy }}</td>
+                                <td bgcolor={{ EUR_buy_change }}>{{ EUR_buy }}</td>
+                                <td bgcolor={{ RUR_buy_change }}>{{ RUR_buy }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">SELL</th>
+                                <td bgcolor={{ USD_sell_change }}>{{ USD_sell }}</td>
+                                <td bgcolor={{ EUR_sell_change }}>{{ EUR_sell }}</td>
+                                <td bgcolor={{ RUR_sell_change }}>{{ RUR_sell }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
     </div>
 </body>
 </html>

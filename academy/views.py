@@ -1,11 +1,18 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
+from exchanger.models import ExchangeRate
+
 from .forms import ContactUsForm, GroupForm, LecturerForm, StudentForm
 from .models import Group, Lecturer, Student
 
 
 def get_home(request):
-    return render(request, 'academy/base.html')
+    exchange_rates = ExchangeRate.objects.all()
+    context = {
+        k: v for ex_rate in exchange_rates
+        for k, v in ex_rate.to_dict().items()
+    }
+    return render(request, 'academy/base.html', context)
 
 
 def get_students(request):

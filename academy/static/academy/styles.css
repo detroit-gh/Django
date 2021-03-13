@@ -1,0 +1,16 @@
+div.header {
+  background-color: #4542ce;
+}
+
+img.main {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  height: 17%;
+}
+
+img.all {
+  width: 12%;
+  height: 12%;
+}
