@@ -8,6 +8,7 @@
     <br>
     {% for student in students %}
         <div>
+            <img src="{{ student.photo.url }}" width="40" height="40">
             <b>{{ student.first_name }} {{ student.last_name }}</b>, {{ student.email }}
             {% if user.is_authenticated %}
                 <a href="{% url 'edit_students' student_id=student.id %}">

@@ -20,7 +20,7 @@ def get_exchange_rates():
                                                                       'sell',
                                                                       'sell_change',
                                                                       'created'
-                                                                      ], match_field='id')
+                                                                      ], match_field='currency_id')
 
 
 def filter_out_rates(rates):
@@ -33,9 +33,9 @@ def filter_out_rates(rates):
 
 def get_exchange_rate(rate):
     currency_id = rate['ccy'] + rate['base_ccy']
-    exchange_rate = ExchangeRate.objects.get(id=currency_id)
+    exchange_rate = ExchangeRate.objects.get(curency_id=currency_id)
     return ExchangeRate(
-        id=currency_id,
+        currency_id=currency_id,
         currency=rate['ccy'],
         buy=rate['buy'],
         buy_change=get_changes(exchange_rate.buy, rate['buy']),
