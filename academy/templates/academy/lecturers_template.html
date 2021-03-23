@@ -8,8 +8,9 @@
     <br>
     {% for lecturer in lecturers %}
         <div>
+            <img src="{{ lecturer.photo.url }}" width="40" height="40">
             <b>{{ lecturer.first_name }} {{ lecturer.last_name }}</b>, {{ lecturer.email }}
-            {% if user.is_authenticated %}
+            {% if user.is_superuser %}
                 <a href="{% url 'edit_lecturers' lecturer_id=lecturer.id %}">
                     <button>EDIT</button>
                 </a>
@@ -19,7 +20,7 @@
             {% endif %}
         </div>
     {% endfor %}
-    {% if user.is_authenticated %}
+    {% if user.is_superuser %}
         <br>
         <a href="{% url 'add_lecturers' %}"><button>ADD LECTURER</button></a>
     {% endif %}

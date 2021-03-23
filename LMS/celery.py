@@ -16,7 +16,13 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'delete-logs-at-midnight': {
         'task': 'logger.tasks.delete_log',
-        'schedule': crontab(minute=0, hour=0)
+        'schedule': crontab(minute=0, hour=0),
+        'args': ()
+    },
+    'currency_update_every_30_min': {
+        'task': 'exchanger.tasks.get_exchange_rates',
+        'schedule': crontab(minute='*/30'),
+        'args': ()
     }
 }
 # Load task modules from all registered Django app configs.

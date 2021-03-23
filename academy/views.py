@@ -1,11 +1,19 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.cache import cache_page
+
+from exchanger.models import ExchangeRate
 
 from .forms import ContactUsForm, GroupForm, LecturerForm, StudentForm
 from .models import Group, Lecturer, Student
 
 
 def get_home(request):
-    return render(request, 'academy/base.html')
+    exchange_rates = ExchangeRate.objects.all()
+    context = {
+        k: v for ex_rate in exchange_rates
+        for k, v in ex_rate.to_dict().items()
+    }
+    return render(request, 'academy/base.html', context)
 
 
 def get_students(request):
@@ -65,6 +73,7 @@ def add_groups(request):
     return render(request, 'academy/add_groups.html', context)
 
 
+@cache_page(60 * 30)
 def edit_students(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     if request.method == 'POST':
@@ -78,6 +87,7 @@ def edit_students(request, student_id):
     return render(request, 'academy/edit_students.html', {'form': form})
 
 
+@cache_page(60 * 30)
 def edit_lecturers(request, lecturer_id):
     lecturer = get_object_or_404(Lecturer, id=lecturer_id)
     if request.method == 'POST':
@@ -91,6 +101,7 @@ def edit_lecturers(request, lecturer_id):
     return render(request, 'academy/edit_lecturers.html', {'form': form})
 
 
+@cache_page(60 * 30)
 def edit_groups(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     if request.method == 'POST':
