@@ -132,13 +132,21 @@ def delete_groups(request, group_id):
 
 def add_feedback(request):
     feedback = None
+    message = True
 
     if request.method == 'POST':
         feedback_form = ContactUsForm(data=request.POST)
         if feedback_form.is_valid():
             feedback = feedback_form.save()
+            send = request.session.get('send')
+            if send:
+                message = True
+            else:
+                request.session['send'] = True
+            request.session.modified = True
     context = {
         'feedback': feedback,
-        'feedback_form': ContactUsForm()
+        'feedback_form': ContactUsForm(),
+        'send': message
     }
     return render(request, 'academy/add_feedback.html', context)
