@@ -5,15 +5,20 @@ class Student(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
+    photo = models.ImageField(upload_to='photo/', default='photo/default.png')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+    def full_name(self):
+        return self.first_name + " " + self.last_name
 
 
 class Lecturer(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
+    photo = models.ImageField(upload_to='photo/', default='photo/default.png')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

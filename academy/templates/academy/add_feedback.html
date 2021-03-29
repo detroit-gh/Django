@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    {% if feedback %}
+    {% if send %}
+        <b>You already send a message! </b>
+    {% elif feedback %}
         <b>Thanks for your feedback!</b>
     {% else %}
         <form method="post">
