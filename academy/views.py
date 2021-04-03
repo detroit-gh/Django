@@ -132,7 +132,7 @@ def delete_groups(request, group_id):
 
 def add_feedback(request):
     feedback = None
-    message = True
+    message = False
 
     if request.method == 'POST':
         feedback_form = ContactUsForm(data=request.POST)
