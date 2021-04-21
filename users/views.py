@@ -55,4 +55,4 @@ def activate(request, user_id, token):
         login(request, user)
         return redirect('/')
 
-    return render(request, 'account_activation_invalid.html')
+    return render(request, 'users/account_activation_invalid.html')
