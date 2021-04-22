@@ -9,9 +9,9 @@ import pytest
 from pytest_django.asserts import assertTemplateUsed
 
 
-NUMBER_OF_STUDENTS = 20
-NUMBER_OF_TEACHERS = 2
-NUMBER_OF_GROUPS = 2
+NUMBER_OF_STUDENTS = 10
+NUMBER_OF_TEACHERS = 1
+NUMBER_OF_GROUPS = 1
 F_NAME = 'Anton'
 L_NAME = 'Lysenko'
 EMAIL = 'anthony@gmail.com'

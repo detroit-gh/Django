@@ -24,7 +24,7 @@
 
                     <div class="col-3 align-content-end" style="color: white; text-align: right;">
                         {% if not user.is_authenticated %}
-                            <a href="{% url 'login' %}">
+                            <a href="{% url 'login' %}" id="login">
                                 <svg width="30" height="35" viewBox="0 0 469 469.33333"  xmlns="http://www.w3.org/2000/svg">
                                     <path d="m233.765625 0c-122.410156 0-222.804687 93.738281-233.597656 213.332031h190.933593v-64c0-8.617187 5.203126-16.402343 13.160157-19.710937 7.980469-3.304688 17.152343-1.472656 23.253906 4.628906l85.332031 85.335938c8.34375 8.339843 8.34375 21.820312 0 30.164062l-85.332031 85.332031c-6.101563 6.101563-15.273437 7.9375-23.253906 4.628907-7.976563-3.304688-13.160157-11.09375-13.160157-19.710938v-64h-190.933593c10.792969 119.59375 111.1875 213.332031 233.597656 213.332031 129.601563 0 234.667969-105.066406 234.667969-234.664062 0-129.601563-105.066406-234.667969-234.667969-234.667969zm0 0" fill="#4fec8f"/>
                                 </svg>
@@ -67,7 +67,7 @@
                         {% endif %}
                         {% if request.path != '/contactus' %}
                             <div class="card mt-2 pt-1 pb-2 text-center">
-                                <a href="{% url 'add_feedback' %}">
+                                <a href="{% url 'add_feedback' %}" id="contact_us">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M20.0001 2.64811C20.0001 1.75 19.2501 1 18.5001 1L2.4851 1C1.75011 1 1.00007 1.75 1.00009 2.5L1 19.9654C1 21.7238 2.22241 23 4.04501 23L20 23L20.0001 2.64811ZM10 5H6.00009C5.5476 5 5 5.54751 5 6C5.04661 6.41697 5.58053 7.0026 6.00009 7H10C10.4022 7 11 6.40222 11 6C11.0547 5.56558 10.4321 4.99661 10 5ZM5.9424 19H15.0001C15.4526 19 16 18.4525 16 18C15.9534 17.583 15.4197 16.9974 15.0001 17H6.00009C5.58053 16.9974 5.04661 17.583 5 18C5 18.4503 5.49668 19 5.9424 19ZM5.9424 16H15.0001C15.4197 16.0026 15.9534 15.417 16 15C16 14.5475 15.4526 14 15.0001 14H6.00009C5.54977 14 5 14.5543 5 15C5.04661 15.417 5.52284 16.0026 5.9424 16ZM6.00009 13H15.0001C15.4526 13 16 12.4525 16 12C15.9534 11.583 15.4774 10.9974 15.0578 11H6.00009C5.58053 10.9974 5.04661 11.583 5 12C5 12.4457 5.54977 13 6.00009 13ZM5.9424 10H15.0001C15.4197 10.0026 15.9534 9.41697 16 9C16 8.54751 15.4526 8 15.0001 8H5.9424C5.49207 8 5 8.55429 5 9C5.04661 9.41697 5.52284 10.0026 5.9424 10Z" fill="#4542ce"></path>
                                     </svg>
@@ -86,7 +86,7 @@
                         <img class="card-img-left flex-auto d-none d-lg-block all" src="media/student.png">
                         <div class="card-body d-flex flex-column align-items-center">
                             <h2>
-                                <a class="text-dark" href="students">LIST OF OUR STUDENTS CAN FIND HERE</a>
+                                <a class="text-dark" href="students" id="students">LIST OF OUR STUDENTS CAN FIND HERE</a>
                             </h2>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <img class="card-img-left flex-auto d-none d-lg-block all" src="media/teacher.png">
                         <div class="card-body d-flex flex-column align-items-center">
                             <h2>
-                                <a class="text-dark" href="lecturers">LIST OF OUR TEACHERS CAN FIND HERE</a>
+                                <a class="text-dark" href="lecturers" id="lecturers">LIST OF OUR TEACHERS CAN FIND HERE</a>
                             </h2>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         <img class="card-img-left flex-auto d-none d-lg-block all" src="media/group.png">
                         <div class="card-body d-flex flex-column align-items-center">
                             <h2>
-                                <a class="text-dark" href="groups">INFO ABOUT GROUPS CAN FIND HERE</a>
+                                <a class="text-dark" href="groups" id="groups">INFO ABOUT GROUPS CAN FIND HERE</a>
                             </h2>
                         </div>
                     </div>
