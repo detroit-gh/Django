@@ -30,4 +30,8 @@
     {% if user.is_superuser %}
         <a href="{% url 'add_groups' %}"><button>ADD GROUP</button></a>
     {% endif %}
+    <br>
+    {% if groups.paginator.num_pages != 1 %}
+        {% include "academy/pagination.html" with page=groups %}
+    {% endif %}
 {% endblock %}

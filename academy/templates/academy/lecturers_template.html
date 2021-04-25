@@ -24,4 +24,8 @@
         <br>
         <a href="{% url 'add_lecturers' %}"><button>ADD LECTURER</button></a>
     {% endif %}
+    <br>
+    {% if lecturers.paginator.num_pages != 1 %}
+        {% include "academy/pagination.html" with page=lecturers %}
+    {% endif %}
 {% endblock %}

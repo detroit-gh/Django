@@ -1,3 +1,7 @@
+from LMS.settings import GROUPS_PER_PAGE, LECTURERS_PER_PAGE, STUDENTS_PER_PAGE
+
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 
@@ -18,19 +22,41 @@ def get_home(request):
 
 def get_students(request):
     students = Student.objects.all()
-    return render(request, 'academy/students_template.html', {'students': students})
+    paginator = Paginator(students, STUDENTS_PER_PAGE)
+    page = request.GET.get('page')
+    students = paginator.get_page(page)
+    context = {
+        'students': students,
+        'page': page
+    }
+    return render(request, 'academy/students_template.html', context)
 
 
 def get_lecturers(request):
     lecturers = Lecturer.objects.all()
-    return render(request, 'academy/lecturers_template.html', {'lecturers': lecturers})
+    paginator = Paginator(lecturers, LECTURERS_PER_PAGE)
+    page = request.GET.get('page')
+    lecturers = paginator.get_page(page)
+    context = {
+        'lecturers': lecturers,
+        'page': page
+    }
+    return render(request, 'academy/lecturers_template.html', context)
 
 
 def get_groups(request):
     groups = Group.objects.all()
-    return render(request, 'academy/groups_template.html', {'groups': groups})
+    paginator = Paginator(groups, GROUPS_PER_PAGE)
+    page = request.GET.get('page')
+    groups = paginator.get_page(page)
+    context = {
+        'groups': groups,
+        'page': page
+    }
+    return render(request, 'academy/groups_template.html', context)
 
 
+@login_required
 def add_students(request):
     student = None
 
@@ -45,6 +71,7 @@ def add_students(request):
     return render(request, 'academy/add_students.html', context)
 
 
+@login_required
 def add_lecturers(request):
     lecturer = None
 
@@ -59,6 +86,7 @@ def add_lecturers(request):
     return render(request, 'academy/add_lecturers.html', context)
 
 
+@login_required
 def add_groups(request):
     group = None
 
@@ -73,6 +101,7 @@ def add_groups(request):
     return render(request, 'academy/add_groups.html', context)
 
 
+@login_required
 @cache_page(60 * 30)
 def edit_students(request, student_id):
     student = get_object_or_404(Student, id=student_id)
@@ -87,6 +116,7 @@ def edit_students(request, student_id):
     return render(request, 'academy/edit_students.html', {'form': form})
 
 
+@login_required
 @cache_page(60 * 30)
 def edit_lecturers(request, lecturer_id):
     lecturer = get_object_or_404(Lecturer, id=lecturer_id)
@@ -101,6 +131,7 @@ def edit_lecturers(request, lecturer_id):
     return render(request, 'academy/edit_lecturers.html', {'form': form})
 
 
+@login_required
 @cache_page(60 * 30)
 def edit_groups(request, group_id):
     group = get_object_or_404(Group, id=group_id)
@@ -132,7 +163,7 @@ def delete_groups(request, group_id):
 
 def add_feedback(request):
     feedback = None
-    message = True
+    message = False
 
     if request.method == 'POST':
         feedback_form = ContactUsForm(data=request.POST)
