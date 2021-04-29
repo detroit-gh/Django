@@ -56,8 +56,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'django.contrib.sites'
-
+    'django.contrib.sites',
+    'rest_framework'
 ]
 
 SITE_ID = 3
@@ -183,3 +183,10 @@ LOGOUT_REDIRECT_URL = '/'
 STUDENTS_PER_PAGE = 10
 LECTURERS_PER_PAGE = 10
 GROUPS_PER_PAGE = 1
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
