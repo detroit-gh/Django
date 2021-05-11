@@ -1,6 +1,7 @@
-from LMS.settings import GROUPS_PER_PAGE, LECTURERS_PER_PAGE, STUDENTS_PER_PAGE
+from LMS.settings import GROUPS_PER_PAGE, LECTURERS_PER_PAGE, SECRET_KEY, STUDENTS_PER_PAGE
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -8,12 +9,17 @@ from django.views.decorators.cache import cache_page
 
 from exchanger.models import ExchangeRate
 
+import jwt
+
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
-from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
+
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework_jwt.serializers import jwt_payload_handler
 
 from .forms import ContactUsForm, GroupForm, LecturerForm, StudentForm
 from .models import Group, Lecturer, Student
@@ -193,7 +199,7 @@ def add_feedback(request):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def students(request):
     if request.method == 'GET':
@@ -216,7 +222,7 @@ def students(request):
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def student(request, student_id):
     try:
@@ -247,7 +253,7 @@ def student(request, student_id):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def lecturers(request):
     if request.method == 'GET':
@@ -270,7 +276,7 @@ def lecturers(request):
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def lecturer(request, lecturer_id):
     try:
@@ -301,7 +307,7 @@ def lecturer(request, lecturer_id):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def groups(request):
     if request.method == 'GET':
@@ -322,7 +328,7 @@ def groups(request):
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def group(request, group_id):
     try:
@@ -344,3 +350,35 @@ def group(request, group_id):
             group.course = course
         group.save()
         return Response(status=HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def authenticate_user(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    if not email or not password:
+        res = {'error': 'Please provide an email and a password'}
+        return Response(res)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        message = "Can't find user with the specified email"
+        res = {'error': message}
+        return Response(res, status=HTTP_404_NOT_FOUND)
+
+    if not user.check_password(password):
+        message = "Can't authenticate with the given credentials or the account has " \
+                  "been deactivated"
+        res = {'error': message}
+        return Response(res, status=HTTP_403_FORBIDDEN)
+
+    payload = jwt_payload_handler(user)
+    token = jwt.encode(payload, SECRET_KEY)
+    user_details = {
+        'user_id': user.pk,
+        'name': f'{user.first_name} {user.last_name}',
+        'token': token
+    }
+    return Response(user_details, status=HTTP_200_OK)
