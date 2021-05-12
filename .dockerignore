@@ -4,3 +4,4 @@ venv/
 .gitignore
 .travis.yml
 .pytest_cache/
+.env
