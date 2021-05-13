@@ -1,14 +1,29 @@
-from LMS.settings import GROUPS_PER_PAGE, LECTURERS_PER_PAGE, STUDENTS_PER_PAGE
+from LMS.settings import GROUPS_PER_PAGE, LECTURERS_PER_PAGE, SECRET_KEY, STUDENTS_PER_PAGE
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 
 from exchanger.models import ExchangeRate
 
+import jwt
+
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
+
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework_jwt.serializers import jwt_payload_handler
+
 from .forms import ContactUsForm, GroupForm, LecturerForm, StudentForm
 from .models import Group, Lecturer, Student
+from .serializers import GroupSerializer, LecturerSerializer, StudentSerializer
 
 
 def get_home(request):
@@ -181,3 +196,189 @@ def add_feedback(request):
         'send': message
     }
     return render(request, 'academy/add_feedback.html', context)
+
+
+@api_view(['GET', 'POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def students(request):
+    if request.method == 'GET':
+        students = Student.objects.all()
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        rdata = request.data
+        data = {
+            'first_name': rdata.get('first_name'),
+            'text': rdata.get('last_name'),
+            'email': rdata.get('email'),
+        }
+        serializer = StudentSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'DELETE', 'PUT'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def student(request, student_id):
+    try:
+        student = Student.objects.get(pk=student_id)
+    except Student.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = StudentSerializer(student)
+        return Response(serializer.data)
+
+    if request.method == 'DELETE':
+        student.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+
+    if request.method == 'PUT':
+        first_name = request.data.get('first_name')
+        if first_name:
+            student.first_name = first_name
+        last_name = request.data.get('last_name')
+        if last_name:
+            student.last_name = last_name
+        email = request.data.get('email')
+        if email:
+            student.email = email
+        student.save()
+        return Response(status=HTTP_200_OK)
+
+
+@api_view(['GET', 'POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def lecturers(request):
+    if request.method == 'GET':
+        lecturers = Lecturer.objects.all()
+        serializer = LecturerSerializer(lecturers, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        rdata = request.data
+        data = {
+            'first_name': rdata.get('first_name'),
+            'text': rdata.get('last_name'),
+            'email': rdata.get('email'),
+        }
+        serializer = LecturerSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'DELETE', 'PUT'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def lecturer(request, lecturer_id):
+    try:
+        lecturer = Lecturer.objects.get(pk=lecturer_id)
+    except Lecturer.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = LecturerSerializer(lecturer)
+        return Response(serializer.data)
+
+    if request.method == 'DELETE':
+        lecturer.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+
+    if request.method == 'PUT':
+        first_name = request.data.get('first_name')
+        if first_name:
+            lecturer.first_name = first_name
+        last_name = request.data.get('last_name')
+        if last_name:
+            lecturer.last_name = last_name
+        email = request.data.get('email')
+        if email:
+            lecturer.email = email
+        lecturer.save()
+        return Response(status=HTTP_200_OK)
+
+
+@api_view(['GET', 'POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def groups(request):
+    if request.method == 'GET':
+        groups = Group.objects.all()
+        serializer = GroupSerializer(groups, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        rdata = request.data
+        data = {
+            'course': rdata.get('course')
+        }
+        serializer = GroupSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'DELETE', 'PUT'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def group(request, group_id):
+    try:
+        group = Group.objects.get(pk=group_id)
+    except Group.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = GroupSerializer(group)
+        return Response(serializer.data)
+
+    if request.method == 'DELETE':
+        group.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+
+    if request.method == 'PUT':
+        course = request.data.get('course')
+        if course:
+            group.course = course
+        group.save()
+        return Response(status=HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def authenticate_user(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    if not email or not password:
+        res = {'error': 'Please provide an email and a password'}
+        return Response(res)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        message = "Can't find user with the specified email"
+        res = {'error': message}
+        return Response(res, status=HTTP_404_NOT_FOUND)
+
+    if not user.check_password(password):
+        message = "Can't authenticate with the given credentials or the account has " \
+                  "been deactivated"
+        res = {'error': message}
+        return Response(res, status=HTTP_403_FORBIDDEN)
+
+    payload = jwt_payload_handler(user)
+    token = jwt.encode(payload, SECRET_KEY)
+    user_details = {
+        'user_id': user.pk,
+        'name': f'{user.first_name} {user.last_name}',
+        'token': token
+    }
+    return Response(user_details, status=HTTP_200_OK)

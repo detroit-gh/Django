@@ -16,5 +16,12 @@ urlpatterns = [
     path('students/<int:student_id>/delete', views.delete_students, name='delete_students'),
     path('lecturers/<int:lecturer_id>/delete', views.delete_lecturers, name='delete_lecturers'),
     path('groups/<int:group_id>/delete', views.delete_groups, name='delete_groups'),
-    path('contactus', views.add_feedback, name='add_feedback')
+    path('contactus', views.add_feedback, name='add_feedback'),
+    path('api/v1/students/', views.students),
+    path('api/v1/lecturers/', views.lecturers),
+    path('api/v1/groups/', views.groups),
+    path('api/v1/students/<int:student_id>', views.student),
+    path('api/v1/lecturers/<int:lecturer_id>', views.lecturer),
+    path('api/v1/groups/<int:group_id>', views.group),
+    path('api/v1/auth', views.authenticate_user)
 ]

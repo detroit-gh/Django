@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import datetime
 import os
 from pathlib import Path
 
@@ -22,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@q=7gaciuh5870bdm3@ne6i=*ybcb@$mv49yu3_qgkkmbpp#t7'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-SENDGRID_KEY = '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'
+SENDGRID_KEY = os.environ.get('SENDGRID_KEY')
 EMAIL_SENDER = 'detroit9gag@protonmail.com'
 EMAIL_RECIPIENT = 'detroit9gag@gmail.com'
 
@@ -56,8 +57,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'django.contrib.sites'
-
+    'django.contrib.sites',
+    'rest_framework'
 ]
 
 SITE_ID = 3
@@ -119,10 +120,15 @@ WSGI_APPLICATION = 'LMS.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
+
 
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
@@ -183,3 +189,16 @@ LOGOUT_REDIRECT_URL = '/'
 STUDENTS_PER_PAGE = 10
 LECTURERS_PER_PAGE = 10
 GROUPS_PER_PAGE = 1
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
+    ]
+}
+
+JWT_AUTH = {
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
