@@ -16,4 +16,16 @@
             <p><input type="submit" value="Send"></p>
         </form>
     {% endif %}
+    <form name="payment" method="post" action="https://sci.any.money/invoice" accept-charset="UTF-8">
+        <input type="hidden" name="merchant" value="3817"/>
+        <input type="hidden" name="amount" value="100.25"/>
+        <input type="hidden" name="in_curr" value="UAH"/>
+        <input type="hidden" name="payway" value="card"/>
+        <input type="hidden" name="externalid" value="123"/>
+        <input type="hidden" name="expiry" value="600"/>
+        <input type="hidden" name="client_email" value="customer@domain.com"/>
+        <input type="hidden" name="callback_url" value="https://example.com/order_handler"/>
+        <input type="hidden" name="redirect_url" value="https://example.com/order_page/"/>
+        <input type="submit" value="Pay">
+    </form>
 {% endblock %}
